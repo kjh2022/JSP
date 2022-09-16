@@ -80,23 +80,34 @@
 	function idCheck(){ //ajax를 이용하여 id 중복체크를 해야함
 		let id = document.getElementById('memberId').value;
 		const xhttp = new XMLHttpRequest();
-		xhttp.onload = function(){
+//		xhttp.onload = function(){
 			//성공했을때, 실패했을때
-//			if(this.readyState == 4 && this.status == 200){
-				if(this.responseText == '1');
-				alert("사용 가능한 아이디 입니다.");
-				document.getElementById('btn').value = "YES"; 
-				document.getElementById('memberPassword').focus();
+/*			if(this.readyState == 4 && this.status == 200){
+				responseResult(this.response);
 			}else{
 				alert("중복된 아이디 입니다.")
 				document.getElementById('memberId').value = "";
 				document.getElementById('memberId').focus();
-				
 			}
-		//}
+		}
 		xhttp.open("GET", "ajaxMemberIdCheck.do?id="+id);
-		xhttp.send();
+		xhttp.send();*/
 		
+		/*fetch를 활용한 ajax*/
+		fetch('ajaxMemberIdCheck.do?id='+id)
+		.then(response=>response.text())
+		.then(data=>responseResult(data)); /*여기에 callback함수를 작성해야함*/
+	}
+	function responseResult(data){
+		if(data == '1'){
+		alert("사용 가능한 아이디 입니다.");
+		document.getElementById('btn').value = "YES"; 
+		document.getElementById('memberPassword').focus();
+	}else{
+		alert("중복된 아이디 입니다.")
+		document.getElementById('memberId').value = "";
+		document.getElementById('memberId').focus();
+	}
 	}
 	</script>
 </body>

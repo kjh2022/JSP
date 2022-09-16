@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import co.micol.prj.common.Command;
+import co.micol.prj.member.command.AjaxMemberIdCheck;
 import co.micol.prj.member.command.MemberInsert;
 import co.micol.prj.member.command.MemberJoinForm;
 import co.micol.prj.member.command.MemberSelect;
@@ -29,11 +30,12 @@ public class FrontController extends HttpServlet {
 
 	public void init(ServletConfig config) throws ServletException {
 		// 모든 요청을 등록하는 곳
-		map.put("/main.do", new MainCommand()); //처음 시작하는 페이지
-		map.put("/memberSelectList.do", new MemberSelectList()); //멤버 목록 보기(출력
-		map.put("/MemberSelect.do", new MemberSelect()); //멤버 상세 정보
+		map.put("/main.do", new MainCommand()); // 처음 시작하는 페이지
+		map.put("/memberSelectList.do", new MemberSelectList()); // 멤버 목록 보기(출력
+		map.put("/MemberSelect.do", new MemberSelect()); // 멤버 상세 정보
 		map.put("/memberJoinForm.do", new MemberJoinForm());
 		map.put("/memberInsert.do", new MemberInsert());
+		map.put("/ajaxMemberIdCheck.do", new AjaxMemberIdCheck()); // 아이디 중복체크
 	}
 
 	protected void service(HttpServletRequest request, HttpServletResponse response)
@@ -51,11 +53,17 @@ public class FrontController extends HttpServlet {
 		Command command = map.get(page); // 처리할 command를 찾음
 		String viewPage = command.exec(request, response);// command를 실행하고 돌려줄 페이지 받음
 		if (!viewPage.endsWith(".do")) {
-			viewPage = "/WEB-INF/views/" + viewPage + ".jsp";
-			RequestDispatcher dispatcher = request.getRequestDispatcher(viewPage);
-			dispatcher.forward(request, response);
+			if (viewPage.startsWith("ajax:")) { // ajax를 처리하기 위한 view resolve
+				response.setContentType("text/html; charset=UTF-8");
+				response.getWriter().append(viewPage.substring(5));
+				return;
+			} else { //리턴값이 보여줄 페이지를 가지고 올때
+				viewPage = "/WEB-INF/views/" + viewPage + ".jsp";
+				RequestDispatcher dispatcher = request.getRequestDispatcher(viewPage);
+				dispatcher.forward(request, response);
+			}
 		} else {
-			response.sendRedirect(viewPage);
+			response.sendRedirect(viewPage); //command의 리턴값이 *.do로 올때 처리함
 		}
 	}
 
