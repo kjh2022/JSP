@@ -23,7 +23,7 @@
     <put-attribute name="footer" value="/WEB-INF/views/layouts/adminFooter.jsp" />
   </definition>
   
-  <definition name="WILDCARD:admin*/*" extends="myapp.homepage">
+  <definition name="WILDCARD:admin/*/*" extends="myapp.admin">
   	<put-attribute name="body" value="/WEB-INF/views/{1}/{2}.jsp"/>
   </definition>
 </tiles-definitions>

@@ -66,8 +66,8 @@
 						<li class="nav-item"><a class="nav-link" href="contact.do">Contact</a>
 						</li>
 						<c:if test="${author eq 'ADMIN'}">
-						<li class="nav-item"><a class="nav-link" href="admin.do">Admin</a></li>
 						</c:if>
+						<li class="nav-item"><a class="nav-link" href="admin.do">Admin</a></li>
 					</ul>
 				</div>
 				<div class="navbar align-self-center d-flex">

@@ -41,11 +41,7 @@
               </li>
           </ul>
       </nav>
-          <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
 	<div id="layoutSidenav">
-	<!-- side -->
-	<tiles:insertAttribute name="side"/>
-	
 		<div id="layoutSidenav_content">
 			<!-- body -->
 			<tiles:insertAttribute name="body"/>
